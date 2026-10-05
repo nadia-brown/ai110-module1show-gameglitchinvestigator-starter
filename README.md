@@ -26,18 +26,36 @@ It wrote the code, ran away, and now the game is unplayable.
 ## 📝 Document Your Experience
 
 - [ ] Describe the game's purpose.
+  This is a guessing game. The computer generates a secret number which the user needs to guess. They are given 7 attempts. If the user guesses the number within the alloted muber of attempts they win. If the user runs out of attempts and run out of guesses they lost. 
+  
 - [ ] Detail which bugs you found.
+
+The first bug is the attempt count. 
+
+The second bug that a user can  keep guessing after they have won. 
+
+The third bug is that the hints worked intermittently,
+
 - [ ] Explain what fixes you applied.
+
+The fixes applied are the attempt counter, the game ending, and the hint notification. 
+
+The attempt counter keeps an accurate count for the number of user attempts. 
+
+The game is disabled after a player wins. The user cannot keep playing.
+
+ The hint notication displays a response for each guess attempt. 
+
 
 ## 📸 Demo Walkthrough
 
 Describe your fixed game in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. User enters a guess of 50
+2. Game returns "Too High"
+3. User enters a guess of 25, and the game shows "Too High"
+4. Score updates correctly after each guess
+5. Game ends after the correct guess 
 
 **Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
 
@@ -47,6 +65,16 @@ Describe your fixed game in numbered steps so a reader can follow along without 
 # Paste your pytest output here, e.g.:
 # pytest tests/
 # ========================= X passed in 0.XXs =========================
+
+(.venv) nadia@new-host-8 glitch-game % python3 -m pytest                                
+================================== test session starts ===================================
+platform darwin -- Python 3.13.16, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/nadia/CodePath/glitch-game
+plugins: anyio-4.15.1
+collected 6 items                                                                        
+tests/test_game_logic.py ......                                                    [100%]
+
+=================================== 6 passed in 0.06s ====================================
 ```
 
 ## 🚀 Stretch Features

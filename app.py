@@ -1,5 +1,6 @@
 import random
 import streamlit as st
+from logic_utils import check_guess
 
 def get_range_for_difficulty(difficulty: str):
     if difficulty == "Easy":
@@ -27,24 +28,6 @@ def parse_guess(raw: str):
         return False, None, "That is not a number."
 
     return True, value, None
-
-
-def check_guess(guess, secret):
-    if guess == secret:
-        return "Win", "🎉 Correct!"
-
-    try:
-        if guess > secret:
-            return "Too High", "📈 Go HIGHER!"
-        else:
-            return "Too Low", "📉 Go LOWER!"
-    except TypeError:
-        g = str(guess)
-        if g == secret:
-            return "Win", "🎉 Correct!"
-        if g > secret:
-            return "Too High", "📈 Go HIGHER!"
-        return "Too Low", "📉 Go LOWER!"
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
@@ -92,8 +75,9 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
+# FIXME: Logic breaks here
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 1
+    st.session_state.attempts = 0 #fix: changed attempts from 1 to 0 
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -132,6 +116,8 @@ with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
 if new_game:
+    st.session_state.status = "playing"
+    st.session_state.history = []
     st.session_state.attempts = 0
     st.session_state.secret = random.randint(1, 100)
     st.success("New game started.")
@@ -145,8 +131,8 @@ if st.session_state.status != "playing":
     st.stop()
 
 if submit:
-    st.session_state.attempts += 1
-
+    # FIXME: Logic breaks here
+   
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
@@ -154,11 +140,11 @@ if submit:
         st.error(err)
     else:
         st.session_state.history.append(guess_int)
+        # FIXME: Logic breaks here
+        st.session_state.attempts += 1
 
-        if st.session_state.attempts % 2 == 0:
-            secret = str(st.session_state.secret)
-        else:
-            secret = st.session_state.secret
+        # FIXME: Logic breaks here: every 2nd guess is used to compare
+        secret = st.session_state.secret
 
         outcome, message = check_guess(guess_int, secret)
 
@@ -170,7 +156,8 @@ if submit:
             outcome=outcome,
             attempt_number=st.session_state.attempts,
         )
-
+        
+        # FIXME: Logic breaks here
         if outcome == "Win":
             st.balloons()
             st.session_state.status = "won"
